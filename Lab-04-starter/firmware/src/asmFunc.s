@@ -97,6 +97,10 @@ positive_balance_directive:
     B done
     
 negative_balance_directive:
+    LDR r10, =stay_in
+    MOV r11, 1
+    STR r11, [r10]
+    B done
 
 out_of_range:
     /* This directive is for when the transaction vale is out of range */
