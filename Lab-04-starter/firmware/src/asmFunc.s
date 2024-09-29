@@ -83,8 +83,21 @@ asmFunc:
     balance is located in R12 and the address of balance is located in r10.*/
     STR r12, [r10]
     
+    /* Now we check to see if the balance is positive or negative, and branch
+     accordingly */
+    CMP r12, 0
+    BGT positive_balance_directive
+    CMP r12, 0
+    BLT negative_balance_directive
     
+positive_balance_directive:
+    LDR r10, =eat_out
+    MOV r11, 1
+    STR r11, [r10]
+    B done
     
+negative_balance_directive:
+
 out_of_range:
     /* This directive is for when the transaction vale is out of range */
     
