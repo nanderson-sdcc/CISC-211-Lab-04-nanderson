@@ -67,6 +67,24 @@ asmFunc:
     
     /*** STUDENTS: Place your code BELOW this line!!! **************/
     
+    /* This section is deticated to setting all outputs to 0, except balance */
+     MOV r1, 0
+     
+     LDR r2, =transaction
+     LDR r3, =eat_out
+     LDR r4, =stay_in
+     LDR r5, =eat_ice_cream
+     LDR r6, =we_have_a_problem
+    
+     STR r1, [r2]
+     STR r1, [r3]
+     STR r1, [r4]
+     STR r1, [r5]
+     STR r1, [r6]
+     
+     /* Now we take our value from r0 and move it to 'transaction' */
+     STR r0, [r2]
+     
     /* This section compares the transaction amout and determines if a branch is neccessary */
     CMP r0, 1000
     BGT out_of_range
@@ -89,17 +107,27 @@ asmFunc:
     BGT positive_balance_directive
     CMP r12, 0
     BLT negative_balance_directive
+    B zero_balance
     
 positive_balance_directive:
     LDR r10, =eat_out
     MOV r11, 1
     STR r11, [r10]
+    MOV r0, r12
     B done
     
 negative_balance_directive:
     LDR r10, =stay_in
     MOV r11, 1
     STR r11, [r10]
+    MOV r0, r12
+    B done
+    
+zero_balance:
+    LDR r10, =eat_ice_cream
+    MOV r11, 1
+    STR r11, [r10]
+    MOV r0, r12
     B done
 
 out_of_range:
