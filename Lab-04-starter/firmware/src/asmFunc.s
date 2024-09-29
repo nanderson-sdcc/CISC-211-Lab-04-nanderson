@@ -66,7 +66,45 @@ asmFunc:
 .endif
     
     /*** STUDENTS: Place your code BELOW this line!!! **************/
-
+    
+    /* This section compares the transaction amout and determines if a branch is neccessary */
+    CMP r0, 1000
+    BGT out_of_range
+    CMP r0, -1000
+    BLT out_of_range
+    
+    /* At this point, it is in range, so we calculate the temp balance in R12*/
+    LDR r10, =balance
+    LDR r11, [r10]
+    ADDS r12, r0, r11
+    BVS out_of_range @ if there is an overflow, use the out_of_range instructions
+    
+    /* Our temp balance is good to go, so let's set balance equal to temp balance. Temp
+    balance is located in R12 and the address of balance is located in r10.*/
+    STR r12, [r10]
+    
+    
+    
+out_of_range:
+    /* This directive is for when the transaction vale is out of range */
+    
+    /* Here is updating the value stored at 'we have a problem' to 1*/
+    LDR r11, =we_have_a_problem
+    MOV r12, 1
+    STR r12, [r11]
+    
+    /* Here is updating the value stored at 'transaction' to 0*/
+    LDR r11, =transaction
+    MOV r12, 0
+    STR r12, [r11]
+    
+    /* Here is updating the value stored at r0 to the values stored at 'balance'*/
+    LDR r11, =balance
+    LDR r0, [r11]
+    
+    B done
+   
+    
     
     /*** STUDENTS: Place your code ABOVE this line!!! **************/
 
